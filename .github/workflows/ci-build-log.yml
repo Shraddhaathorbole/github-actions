@@ -1,4 +1,4 @@
-name: CI Build Log Example
+name: CI Build with Unit Tests and Test Logs
 
 on:
   push:
@@ -8,33 +8,24 @@ on:
 
 jobs:
   build:
-    name: Build Project
+    name: Build and Test Project
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Code from Repository
         uses: actions/checkout@v3
 
-      - name: List files in the repository (debugging)
-        run: ls -R
-
-      - name: Create github-actions/shared directory if not exists
+      - name: Install Dependencies
         run: |
-          mkdir -p $GITHUB_WORKSPACE/github-actions/shared
-          echo "Shared directory created at $GITHUB_WORKSPACE/github-actions/shared"
+          npm install  # or other package manager like pip, yarn, etc.
 
-      - name: Run Build Script and Save Logs
+      - name: Run Unit Tests and Save Test Logs
         run: |
-          bash github-actions/scripts/build.sh 2>&1 | tee $GITHUB_WORKSPACE/github-actions/shared/build.log
-          echo "Build log saved to $GITHUB_WORKSPACE/github-actions/shared/build.log"
+          ./run_tests.sh 2>&1 | tee $GITHUB_WORKSPACE/github-actions/shared/test.log
+          echo "Test log saved to $GITHUB_WORKSPACE/github-actions/shared/test.log"
 
-      - name: Check if build.log exists
-        run: |
-          echo "Checking if build.log exists:"
-          ls -l $GITHUB_WORKSPACE/github-actions/shared/build.log || echo "build.log not found"
-
-      - name: Upload Build Log as Artifact
+      - name: Upload Test Logs as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build-log
-          path: github-actions/scripts/build.log
+          name: test-log  
+          path: github-actions/shared/test.log 
