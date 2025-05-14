@@ -21,7 +21,7 @@ jobs:
       - name: Run Build Script and Save Logs
         run: |
           mkdir -p build
-          bash scripts/build.sh 2>&1 | tee build/build.log
+          bash github-actions/scripts/build.sh 2>&1 | tee build/build.log
 
       - name: Upload Build Log as Artifact
         uses: actions/upload-artifact@v4
