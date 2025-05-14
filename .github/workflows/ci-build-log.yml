@@ -1,0 +1,28 @@
+
+name: CI Build Log Example
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Run Build Script and Save Logs
+        run: |
+          mkdir -p build
+          bash scripts/build.sh 2>&1 | tee build/build.log
+
+      - name: Upload Build Log Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build/build.log
