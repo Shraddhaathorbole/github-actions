@@ -19,13 +19,9 @@ jobs:
         run: |
           npm install  # or other package manager like pip, yarn, etc.
 
-      - name: Run Unit Tests and Save Test Logs
-        run: |
-          ./run_tests.sh 2>&1 | tee $GITHUB_WORKSPACE/github-actions/shared/test.log
-          echo "Test log saved to $GITHUB_WORKSPACE/github-actions/shared/test.log"
-
       - name: Upload Test Logs as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: test-log  
-          path: github-actions/shared/test.log 
+            name: test-log-${{ github.sha }}
+            path: github-actions/shared/test.log
+
