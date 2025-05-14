@@ -20,7 +20,7 @@ jobs:
 
       - name: Create github-actions/shared directory if not exists
         run: |
-          mkdir -p github-actions/shared
+          mkdir -p $GITHUB_WORKSPACE/github-actions/shared
           echo "Shared directory created at $GITHUB_WORKSPACE/github-actions/shared"
 
       - name: Run Build Script and Save Logs
@@ -37,4 +37,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-log
-          path: github-actions/shared/build.log
+          path: $GITHUB_WORKSPACE/github-actions/shared/build.log
